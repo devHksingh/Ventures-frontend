@@ -1,63 +1,81 @@
-import React, { useState } from 'react';
-import { Camera, User, Mail, MapPin, Phone, Calendar, Briefcase, Github, Linkedin, Twitter, Save, Edit3, X, Check, Eye, EyeOff } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Camera,
+  User,
+  Mail,
+  MapPin,
+  Phone,
+  Calendar,
+  Briefcase,
+  Github,
+  Linkedin,
+  Twitter,
+  Save,
+  Edit3,
+  X,
+  Check,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 
 const StartupProfile = () => {
   const [profile, setProfile] = useState({
-    name: 'Ananya Jain',
-    email: 'ananya@example.com',
-    phone: '+91 98765 43210',
-    location: 'Mumbai, India',
-    bio: 'Startup enthusiast and innovator passionate about creating impactful solutions.',
-    jobTitle: 'Senior Product Manager',
-    company: 'TechCorp Solutions',
-    dateOfBirth: '1995-06-15',
-    profileImage: '',
+    name: "Ananya Jain",
+    email: "ananya@example.com",
+    phone: "+91 98765 43210",
+    location: "Mumbai, India",
+    bio: "Startup enthusiast and innovator passionate about creating impactful solutions.",
+    jobTitle: "Senior Product Manager",
+    company: "TechCorp Solutions",
+    dateOfBirth: "1995-06-15",
+    profileImage: "",
     social: {
-      github: 'ananyajain',
-      linkedin: 'ananya-jain',
-      twitter: 'ananya_codes'
+      github: "ananyajain",
+      linkedin: "ananya-jain",
+      twitter: "ananya_codes",
     },
-    skills: ['React', 'Product Management', 'UI/UX Design', 'Data Analysis'],
-    interests: ['Technology', 'Startups', 'Photography', 'Travel']
+    skills: ["React", "Product Management", "UI/UX Design", "Data Analysis"],
+    interests: ["Technology", "Startups", "Photography", "Travel"],
   });
 
   const [isEditing, setIsEditing] = useState(false);
-  const [imagePreview, setImagePreview] = useState('');
+  const [imagePreview, setImagePreview] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [newSkill, setNewSkill] = useState('');
-  const [newInterest, setNewInterest] = useState('');
-  const [activeTab, setActiveTab] = useState('personal');
+  const [newSkill, setNewSkill] = useState("");
+  const [newInterest, setNewInterest] = useState("");
+  const [activeTab, setActiveTab] = useState("personal");
   const [validationErrors, setValidationErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.includes('.')) {
-      const [parent, child] = name.split('.');
-      setProfile(prev => ({
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
+      setProfile((prev) => ({
         ...prev,
-        [parent]: { ...prev[parent], [child]: value }
+        [parent]: { ...prev[parent], [child]: value },
       }));
     } else {
-      setProfile(prev => ({ ...prev, [name]: value }));
+      setProfile((prev) => ({ ...prev, [name]: value }));
     }
-    
+
     // Clear validation error when user starts typing
     if (validationErrors[name]) {
-      setValidationErrors(prev => ({ ...prev, [name]: '' }));
+      setValidationErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
-        alert('File size should be less than 5MB');
+      if (file.size > 5 * 1024 * 1024) {
+        // 5MB limit
+        alert("File size should be less than 5MB");
         return;
       }
-      
+
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfile(prev => ({ ...prev, profileImage: reader.result }));
+        setProfile((prev) => ({ ...prev, profileImage: reader.result }));
         setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
@@ -66,46 +84,50 @@ const StartupProfile = () => {
 
   const addSkill = () => {
     if (newSkill.trim() && !profile.skills.includes(newSkill.trim())) {
-      setProfile(prev => ({
+      setProfile((prev) => ({
         ...prev,
-        skills: [...prev.skills, newSkill.trim()]
+        skills: [...prev.skills, newSkill.trim()],
       }));
-      setNewSkill('');
+      setNewSkill("");
     }
   };
 
   const removeSkill = (skillToRemove) => {
-    setProfile(prev => ({
+    setProfile((prev) => ({
       ...prev,
-      skills: prev.skills.filter(skill => skill !== skillToRemove)
+      skills: prev.skills.filter((skill) => skill !== skillToRemove),
     }));
   };
 
   const addInterest = () => {
     if (newInterest.trim() && !profile.interests.includes(newInterest.trim())) {
-      setProfile(prev => ({
+      setProfile((prev) => ({
         ...prev,
-        interests: [...prev.interests, newInterest.trim()]
+        interests: [...prev.interests, newInterest.trim()],
       }));
-      setNewInterest('');
+      setNewInterest("");
     }
   };
 
   const removeInterest = (interestToRemove) => {
-    setProfile(prev => ({
+    setProfile((prev) => ({
       ...prev,
-      interests: prev.interests.filter(interest => interest !== interestToRemove)
+      interests: prev.interests.filter(
+        (interest) => interest !== interestToRemove
+      ),
     }));
   };
 
   const validateForm = () => {
     const errors = {};
-    
-    if (!profile.name.trim()) errors.name = 'Name is required';
-    if (!profile.email.trim()) errors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(profile.email)) errors.email = 'Email is invalid';
-    if (profile.phone && !/^\+?[\d\s-()]+$/.test(profile.phone)) errors.phone = 'Phone number is invalid';
-    
+
+    if (!profile.name.trim()) errors.name = "Name is required";
+    if (!profile.email.trim()) errors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(profile.email))
+      errors.email = "Email is invalid";
+    if (profile.phone && !/^\+?[\d\s-()]+$/.test(profile.phone))
+      errors.phone = "Phone number is invalid";
+
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -115,7 +137,7 @@ const StartupProfile = () => {
     if (validateForm()) {
       setIsEditing(false);
       // Here you would typically save to backend
-      alert('Profile updated successfully!');
+      alert("Profile updated successfully!");
     }
   };
 
@@ -126,9 +148,9 @@ const StartupProfile = () => {
   };
 
   const tabs = [
-    { id: 'personal', label: 'Personal Info', icon: User },
-    { id: 'professional', label: 'Professional', icon: Briefcase },
-    { id: 'social', label: 'Social & Skills', icon: Github }
+    { id: "personal", label: "Personal Info", icon: User },
+    { id: "professional", label: "Professional", icon: Briefcase },
+    { id: "social", label: "Social & Skills", icon: Github },
   ];
 
   return (
@@ -192,9 +214,11 @@ const StartupProfile = () => {
               )}
             </div>
           </div>
-          
+
           <div className="pt-20 pb-6 px-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{profile.name}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              {profile.name}
+            </h1>
             <p className="text-lg text-blue-600 mb-2">{profile.jobTitle}</p>
             <p className="text-gray-600">{profile.company}</p>
           </div>
@@ -211,8 +235,8 @@ const StartupProfile = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex-1 px-6 py-4 flex items-center justify-center gap-2 font-medium transition-colors ${
                     activeTab === tab.id
-                      ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-                      : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+                      ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50"
+                      : "text-gray-600 hover:text-blue-600 hover:bg-gray-50"
                   }`}
                 >
                   <Icon className="w-5 h-5" />
@@ -223,7 +247,7 @@ const StartupProfile = () => {
           </div>
 
           <div className="p-6">
-            {activeTab === 'personal' && (
+            {activeTab === "personal" && (
               <div className="space-y-6">
                 {!isEditing ? (
                   <>
@@ -260,65 +284,89 @@ const StartupProfile = () => {
                         <Calendar className="w-5 h-5 text-blue-600" />
                         <div>
                           <p className="text-sm text-gray-500">Date of Birth</p>
-                          <p className="font-medium">{new Date(profile.dateOfBirth).toLocaleDateString()}</p>
+                          <p className="font-medium">
+                            {new Date(profile.dateOfBirth).toLocaleDateString()}
+                          </p>
                         </div>
                       </div>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 mb-2">Bio</p>
-                      <p className="text-gray-700 leading-relaxed">{profile.bio}</p>
+                      <p className="text-gray-700 leading-relaxed">
+                        {profile.bio}
+                      </p>
                     </div>
                   </>
                 ) : (
                   <form onSubmit={handleSave} className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Full Name *
+                        </label>
                         <input
                           type="text"
                           name="name"
                           value={profile.name}
                           onChange={handleChange}
                           className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                            validationErrors.name ? 'border-red-500' : 'border-gray-300'
+                            validationErrors.name
+                              ? "border-red-500"
+                              : "border-gray-300"
                           }`}
                         />
                         {validationErrors.name && (
-                          <p className="text-red-500 text-sm mt-1">{validationErrors.name}</p>
+                          <p className="text-red-500 text-sm mt-1">
+                            {validationErrors.name}
+                          </p>
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Email *
+                        </label>
                         <input
                           type="email"
                           name="email"
                           value={profile.email}
                           onChange={handleChange}
                           className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                            validationErrors.email ? 'border-red-500' : 'border-gray-300'
+                            validationErrors.email
+                              ? "border-red-500"
+                              : "border-gray-300"
                           }`}
                         />
                         {validationErrors.email && (
-                          <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>
+                          <p className="text-red-500 text-sm mt-1">
+                            {validationErrors.email}
+                          </p>
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Phone
+                        </label>
                         <input
                           type="tel"
                           name="phone"
                           value={profile.phone}
                           onChange={handleChange}
                           className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                            validationErrors.phone ? 'border-red-500' : 'border-gray-300'
+                            validationErrors.phone
+                              ? "border-red-500"
+                              : "border-gray-300"
                           }`}
                         />
                         {validationErrors.phone && (
-                          <p className="text-red-500 text-sm mt-1">{validationErrors.phone}</p>
+                          <p className="text-red-500 text-sm mt-1">
+                            {validationErrors.phone}
+                          </p>
                         )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Location
+                        </label>
                         <input
                           type="text"
                           name="location"
@@ -328,7 +376,9 @@ const StartupProfile = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Date of Birth
+                        </label>
                         <input
                           type="date"
                           name="dateOfBirth"
@@ -339,7 +389,9 @@ const StartupProfile = () => {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Bio
+                      </label>
                       <textarea
                         name="bio"
                         value={profile.bio}
@@ -354,7 +406,7 @@ const StartupProfile = () => {
               </div>
             )}
 
-            {activeTab === 'professional' && (
+            {activeTab === "professional" && (
               <div className="space-y-6">
                 {!isEditing ? (
                   <>
@@ -405,7 +457,9 @@ const StartupProfile = () => {
                   <div className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Job Title
+                        </label>
                         <input
                           type="text"
                           name="jobTitle"
@@ -415,7 +469,9 @@ const StartupProfile = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Company
+                        </label>
                         <input
                           type="text"
                           name="company"
@@ -425,9 +481,11 @@ const StartupProfile = () => {
                         />
                       </div>
                     </div>
-                    
+
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Skills</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Skills
+                      </label>
                       <div className="flex gap-2 mb-2">
                         <input
                           type="text"
@@ -435,7 +493,10 @@ const StartupProfile = () => {
                           onChange={(e) => setNewSkill(e.target.value)}
                           placeholder="Add a skill"
                           className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSkill())}
+                          onKeyPress={(e) =>
+                            e.key === "Enter" &&
+                            (e.preventDefault(), addSkill())
+                          }
                         />
                         <button
                           type="button"
@@ -465,7 +526,9 @@ const StartupProfile = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Interests</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Interests
+                      </label>
                       <div className="flex gap-2 mb-2">
                         <input
                           type="text"
@@ -473,7 +536,10 @@ const StartupProfile = () => {
                           onChange={(e) => setNewInterest(e.target.value)}
                           placeholder="Add an interest"
                           className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addInterest())}
+                          onKeyPress={(e) =>
+                            e.key === "Enter" &&
+                            (e.preventDefault(), addInterest())
+                          }
                         />
                         <button
                           type="button"
@@ -506,7 +572,7 @@ const StartupProfile = () => {
               </div>
             )}
 
-            {activeTab === 'social' && (
+            {activeTab === "social" && (
               <div className="space-y-6">
                 {!isEditing ? (
                   <div className="grid md:grid-cols-2 gap-6">
@@ -521,7 +587,9 @@ const StartupProfile = () => {
                       <Linkedin className="w-5 h-5 text-blue-700" />
                       <div>
                         <p className="text-sm text-gray-500">LinkedIn</p>
-                        <p className="font-medium">@{profile.social.linkedin}</p>
+                        <p className="font-medium">
+                          @{profile.social.linkedin}
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -535,7 +603,9 @@ const StartupProfile = () => {
                 ) : (
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">GitHub Username</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        GitHub Username
+                      </label>
                       <input
                         type="text"
                         name="social.github"
@@ -546,7 +616,9 @@ const StartupProfile = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">LinkedIn Username</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        LinkedIn Username
+                      </label>
                       <input
                         type="text"
                         name="social.linkedin"
@@ -557,7 +629,9 @@ const StartupProfile = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Twitter Username</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Twitter Username
+                      </label>
                       <input
                         type="text"
                         name="social.twitter"
