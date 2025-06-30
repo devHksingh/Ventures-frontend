@@ -75,10 +75,10 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
     </div>;
   }
   
-  if (!authenticated) {
-    // Redirect to login if not authenticated
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
+  // if (!authenticated) {
+  //   // Redirect to login if not authenticated
+  //   return <Navigate to="/login" state={{ from: location }} replace />;
+  // }
   
   if (requiredRole && !hasRequiredRole) {
     // Redirect to unauthorized page if user doesn't have the required role
