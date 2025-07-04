@@ -65,7 +65,7 @@ import InvestmentPreferences from './pages/investor/profile/InvestmentPreference
 import PortfolioAnalytics from './pages/investor/portfolio/PortfolioAnalytics.tsx';
 import PortfolioPerformance from './pages/investor/portfolio/PortfolioPerformance.tsx';
 import InvestmentDetail from "./pages/investor/portfolio/InvestmentDetail.tsx";
-
+// 
 // Floating Profile Button (always visible)
 const ProfileCircleButton = () => {
   const navigate = useNavigate();
